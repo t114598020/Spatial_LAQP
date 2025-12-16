@@ -3,7 +3,9 @@ Install PostgreSQL(18.1, Windows) at [Postgre](https://www.enterprisedb.com/down
 
 
 ### To test postgis is in
-Windows search "pgAdmin 4"
+Windows search "pgAdmin 4" 
+
 Input `SELECT PostGIS_Version();` at the Query section.
+
 If the Data Output shows version then done. 
 ![picture or gif url](https://github.com/t114598020/Spatial_LAQP/blob/main/postgis_test.png?raw=true)
