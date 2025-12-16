@@ -1,1 +1,0 @@
-This is spatial database final project.
