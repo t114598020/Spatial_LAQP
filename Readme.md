@@ -11,6 +11,8 @@ Python 3.10.19
 
 Run `pip install -r requirements.txt` for the environment.
 
+To run demo, `streamlit run demo.py`.
+
 ### To test postgis
 Windows search "pgAdmin 4" 
 
@@ -20,6 +22,7 @@ Input `SELECT PostGIS_Version();` at the code section and execute.
 
 If the Data Output shows version then done. 
 ![picture or gif url](https://github.com/t114598020/Spatial_LAQP/blob/main/postgis_test.png?raw=true)
+
 
 
 
