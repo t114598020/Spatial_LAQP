@@ -14,3 +14,4 @@ To run demo, `streamlit run demo.py`.
 
 ### Demo
 
+<img width="669" height="747" alt="image" src="https://github.com/user-attachments/assets/00b108ca-35f8-462c-b59d-d4973dcfb45b" />
