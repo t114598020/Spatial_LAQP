@@ -8,7 +8,10 @@ from query_generate import generate_random_query
 from estimation import optimized_laqp_estimate
 import folium.plugins as plugins
 
-model_data = joblib.load("12_27_uber.pkl")
+# model's weight path
+model_weight_path = "./weights/12_27_uber.pkl"
+
+model_data = joblib.load(model_weight_path)
 model = model_data["model"]
 scaler = model_data["scaler"]
 best_alpha = model_data["alpha"]
