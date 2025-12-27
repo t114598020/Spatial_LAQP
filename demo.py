@@ -8,14 +8,14 @@ from query_generate import generate_random_query
 from estimation import optimized_laqp_estimate
 import folium.plugins as plugins
 
-model_data = joblib.load("12_23_uber.pkl")
+model_data = joblib.load("12_27_uber.pkl")
 model = model_data["model"]
 scaler = model_data["scaler"]
 best_alpha = model_data["alpha"]
 training_data_query_log = model_data["training_query"]
 sample = model_data["sample"]
 
-file_path = 'all_uber.csv'  # Download from URL above
+file_path = './data/all_uber.csv'  # Download from URL above
 data = pd.read_csv(file_path)
 # Change to numerical timestamp
 data['datetime'] = pd.to_datetime(data['Date/Time'])

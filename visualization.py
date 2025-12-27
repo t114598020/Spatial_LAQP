@@ -1,6 +1,6 @@
 import numpy as np
 
-# Function to extract features (flattened ranges + error)
+# Function to extract features
 def extract_features(query_log, dimensions):
     features = []
     for entry in query_log:
