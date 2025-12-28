@@ -2,9 +2,11 @@
 
 The reference paper is at [LAQP](https://arxiv.org/abs/2003.02446).
 
+Our dataset is Uber Pickups in New York City, the original website is at [kaggle](https://www.kaggle.com/datasets/fivethirtyeight/uber-pickups-in-new-york-city).
+
 Install [POWER dataset](https://archive.ics.uci.edu/dataset/235/individual+household+electric+power+consumption) for the LAQP_power.ipynb.
 
-Install [Uber Pickups NYC dataset](https://drive.google.com/file/d/1pdWmns1IamjDkMToYapufxCmtb8kFDp3/view?usp=sharing) for the LAQP_uber.ipynb and the demo.
+Install pre-processed [Uber Pickups NYC dataset](https://drive.google.com/file/d/1pdWmns1IamjDkMToYapufxCmtb8kFDp3/view?usp=sharing) for the LAQP_uber.ipynb and the demo, we only use uber-raw-data.csv from April to September.
 
 Put the installed file to `./data/`.
 
@@ -34,6 +36,7 @@ Also, user can draw a bbox to customize query.
 <img src="https://github.com/t114598020/Spatial_LAQP/blob/main/demo_result.png?raw=true" height="750px" width="500px" />
 
 <img width="669" height="747" alt="image" src="https://github.com/user-attachments/assets/00b108ca-35f8-462c-b59d-d4973dcfb45b" />
+
 
 
 
