@@ -1,6 +1,6 @@
 ### This is spatial database final project.
 
-The reference paper is at [LAQP](https://arxiv.org/abs/2003.02446).
+The reference paper is [LAQP](https://arxiv.org/abs/2003.02446).
 
 Our dataset is Uber Pickups in New York City, the original website is at [kaggle](https://www.kaggle.com/datasets/fivethirtyeight/uber-pickups-in-new-york-city).
 
@@ -37,6 +37,7 @@ Also, user can draw a bbox to customize query.
 <img src="https://github.com/t114598020/Spatial_LAQP/blob/main/demo_result.png?raw=true" height="750px" width="500px" />
 
 <img width="669" height="747" alt="image" src="https://github.com/user-attachments/assets/00b108ca-35f8-462c-b59d-d4973dcfb45b" />
+
 
 
 
