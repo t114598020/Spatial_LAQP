@@ -22,7 +22,7 @@ def optimized_laqp_estimate(query_log, new_query, sample, dimensions, model, sca
     opt_est = best_entry['exact'] + (sample_new - sample_opt)
     opt_est = max(0, opt_est)
     if opt_est == 0:
-        print(f"Optimized LAQP estimate clamp to 0: {opt_est}")
+        print(f"Optimized LAQP estimate clamp to 0")
     else:
         print(f"Optimized LAQP estimate: {opt_est:.2f}")
 
@@ -60,9 +60,12 @@ def laqp_estimate(query_log, new_query, sample, dimensions, model, scaler, full_
     
     sample_opt = best_entry['estimate']
     final_est = best_entry['exact'] + (sample_new - sample_opt)
-    
+    final_est = max(0, final_est)
     print(f"Selected optimal query index: {best_index} (out of  {len(query_log)})")
-    print(f"Basic LAQP estimate: {final_est:.2f}")
+    if final_est == 0:
+        print("LAQP estimate clamp to 0")
+    else:    
+        print(f"Basic LAQP estimate: {final_est:.2f}")
     print(f"Predicted error for new query: {pred_error:.2f}")
     print(f"Chosen historical query error: {best_entry['error']:.2f} (diff: {best_error_diff:.2f})\n")
     # print("Predicate ranges of chosen query:")

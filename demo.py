@@ -13,7 +13,7 @@ model_weight_path = "./weights/12_27_uber.pkl"
 model_data = joblib.load(model_weight_path)
 # import model's weight
 model = model_data["model"]
-scaler = model_data["scaler"]
+scaler = model_data["error_scaler"]
 best_alpha = model_data["alpha"]
 training_data_query_log = model_data["training_query"]
 sample = model_data["sample"]

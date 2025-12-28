@@ -1,14 +1,15 @@
 from scipy.optimize import minimize_scalar
 import numpy as np
-from query_calculate import sample_count
+from query_calculate import sample_count, sample_sum
 
 # Optimization (Hybrid α)
 def range_distance(dimensions, q1, q2):
-    vec1 = [q1[dim][i] for dim in dimensions for i in range(2)]
-    vec2 = [q2[dim][i] for dim in dimensions for i in range(2)]
-    return np.linalg.norm(np.array(vec1) - np.array(vec2))
+    v1 = np.array([q1[dim][i] for dim in dimensions for i in range(2)])
+    v2 = np.array([q2[dim][i] for dim in dimensions for i in range(2)])
+    return np.mean((v1 - v2) ** 2)
 
-def optimize_alpha(train_query, val_queries, dimensions, scaler, model, sample, full_data_size, bounds=(0,1)):
+
+def optimize_alpha(train_query, val_queries, dimensions, scaler, model, sample, full_data_size, task, bounds=(0,1)):
     """
     Tune alpha for hybrid similarity (paper Section 5.3).
     val_queries: List of {'query': dict, 'exact': float} for tuning.
@@ -28,11 +29,14 @@ def optimize_alpha(train_query, val_queries, dimensions, scaler, model, sample, 
             
             # Find best entry with hybrid similarity
             best_entry = min(train_query, key=lambda e: 
-                alpha * abs(e['error'] - pred_error) + 
+                alpha * (e['error'] - pred_error) ** 2 + 
                 (1 - alpha) * range_distance(dimensions, query, e['query']))
             
             # LAQP estimate
-            sample_new = sample_count(query, sample, full_data_size)
+            if task == 'COUNT':
+                sample_new = sample_count(query, sample, full_data_size)
+            else:
+                sample_new = sample_sum('Global_active_power', query, sample, full_data_size)
             sample_opt = best_entry['estimate']
             laqp_est = best_entry['exact'] + (sample_new - sample_opt)
             

@@ -2,7 +2,7 @@ import random
 import numpy as np
 from query_calculate import exact_count, sample_count, exact_sum, sample_sum
 
-def generate_random_query(data, dimensions, test = False):
+def generate_bounded_random_query(data, dimensions, test = False):
     predicates = {}
     for dim in dimensions:
         min_val = data[dim].min()
@@ -28,11 +28,29 @@ def generate_random_query(data, dimensions, test = False):
     
     return predicates
 
+def generate_random_query(data, dimensions, test=False):
+    predicates = {}
+    for dim in dimensions:
+        min_val = data[dim].min()
+        max_val = data[dim].max()
+
+        a = random.uniform(min_val, max_val)
+        b = random.uniform(min_val, max_val)
+
+        lower, upper = min(a, b), max(a, b)
+
+        if test:
+            print(f"dim: {dim}, lower: {lower}, upper: {upper}")
+
+        predicates[dim] = (lower, upper)
+
+    return predicates
+
 def generate_uber_query_log(num_queries, data, sample, dimensions, full_data_size):
     print("Generating uber query log...")
     query_log = []
     while len(query_log) < num_queries:
-        q = generate_random_query(data, dimensions)
+        q = generate_bounded_random_query(data, dimensions)
         exact = exact_count(q, data)
         estimate = sample_count(q, sample, full_data_size)
         if exact > 100 and estimate > 0:  # Skip zeros
@@ -53,7 +71,7 @@ def generate_power_query_log(agg_col, num_queries, data, sample, dimensions, ful
     print("Generating power query log...")
     query_log = []
     while len(query_log) < num_queries and attempts < max_attempts:
-        q = generate_random_query(data, dimensions)
+        q = generate_bounded_random_query(data, dimensions)
         exact_result = exact_sum(agg_col, q, data)
 
         if exact_result > threshold:  # the result will propbably be 0, make threshold to 1 to ensure valuable result.
