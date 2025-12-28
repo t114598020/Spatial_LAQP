@@ -10,7 +10,7 @@ def optimized_laqp_estimate(query_log, new_query, sample, dimensions, model, sca
     pred_error = model.predict(scaled)[0]
     
     best_entry = min(query_log, key=lambda e: 
-        best_alpha * abs(e['error'] - pred_error) + 
+        best_alpha * (e['error'] - pred_error) ** 2 + 
         (1 - best_alpha) * range_distance(dimensions, new_query, e['query']))
     
     if task == "COUNT":
