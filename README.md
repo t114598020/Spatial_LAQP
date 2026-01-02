@@ -32,9 +32,10 @@ There is a calender which bound Date/Time according to the Uber Pickups dataset.
 
 Also, user can draw a bbox to customize query.
 
-<img src="https://github.com/t114598020/Spatial_LAQP/blob/main/demo_query.png?raw=true" height="625px" width="500px" />
-<img src="https://github.com/t114598020/Spatial_LAQP/blob/main/demo_draw.png?raw=true" height="630px" width="500px" />
-<img src="https://github.com/t114598020/Spatial_LAQP/blob/main/demo_result.png?raw=true" height="750px" width="500px" />
+<img src="https://github.com/t114598020/Spatial_LAQP/blob/main/images/demo_query.png?raw=true" height="625px" width="500px" />
+<img src="https://github.com/t114598020/Spatial_LAQP/blob/main/images/demo_draw.png?raw=true" height="630px" width="500px" />
+<img src="https://github.com/t114598020/Spatial_LAQP/blob/main/images/demo_result.png?raw=true" height="750px" width="500px" />
+
 
 
 
