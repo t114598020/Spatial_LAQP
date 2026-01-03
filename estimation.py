@@ -1,17 +1,59 @@
 import numpy as np
 from query_calculate import sample_count, sample_sum
-from optimization import range_distance
+from optimization import EDis_norm, RDis_norm
 
-# Optimized (hybrid with best_alpha)
-def optimized_laqp_estimate(query_log, new_query, sample, dimensions, model, scaler, full_data_size, task, best_alpha):
+# The original LAQP (only depend on error similar)
+def laqp_estimate(
+    query_log, new_query, sample, dimensions,
+    model, scaler, full_data_size, task,
+    error_mean, error_std
+):
     vec = [new_query[dim][i] for dim in dimensions for i in range(2)]
     vec = np.array([vec])
-    scaled = scaler.transform(vec)
-    pred_error = model.predict(scaled)[0]
+    pred_error = model.predict(scaler.transform(vec))[0]
+
+    best_entry = min(
+        query_log,
+        key=lambda e:
+            EDis_norm(pred_error, e['error'], error_mean, error_std)
+    )
+
+    if task == "COUNT":
+        sample_new = sample_count(new_query, sample, full_data_size)
+    else:
+        sample_new = sample_sum("Global_active_power", new_query, sample, full_data_size)
+
+    est = best_entry['exact'] + (sample_new - best_entry['estimate'])
+    est = max(0, est)
+    if est == 0:
+        print(f"Basic LAQP estimate clamp to 0")
+    else:
+        print(f"Basic LAQP estimate: {est:.2f}")
+
+    best_error_diff = best_entry['error'] - pred_error
+    print(f"Predicted error for new query: {pred_error:.2f}")
+    print(f"Chosen historical query error: {best_entry['error']:.2f} (diff: {best_error_diff:.2f})")
+    return est, best_entry
+
+# The optimized LAQP (depend on error similar and range similar with alpha control the weight)
+def optimized_laqp_estimate(query_log, new_query, sample, dimensions,
+                            model, scaler, full_data_size, task, best_alpha,
+                            error_mean, error_std, range_mean, range_std):
+    vec = [new_query[dim][i] for dim in dimensions for i in range(2)]
+    vec = np.array([vec])
+    pred_error = model.predict(scaler.transform(vec))[0]
     
-    best_entry = min(query_log, key=lambda e: 
-        best_alpha * (e['error'] - pred_error) ** 2 + 
-        (1 - best_alpha) * range_distance(dimensions, new_query, e['query']))
+    best_entry = min(
+        query_log,
+        key=lambda e:
+            best_alpha * EDis_norm(
+                pred_error, e['error'], error_mean, error_std
+            )
+            + (1 - best_alpha) * RDis_norm(
+                dimensions, new_query, e['query'],
+                range_mean, range_std
+            )
+    )
     
     if task == "COUNT":
         sample_new = sample_count(new_query, sample, full_data_size)
@@ -26,51 +68,7 @@ def optimized_laqp_estimate(query_log, new_query, sample, dimensions, model, sca
     else:
         print(f"Optimized LAQP estimate: {opt_est:.2f}")
 
+    best_error_diff = best_entry['error'] - pred_error
     print(f"Predicted error for new query: {pred_error:.2f}")
-    print(f"Chosen historical query error: {best_entry['error']:.2f}")
+    print(f"Chosen historical query error: {best_entry['error']:.2f} (diff: {best_error_diff:.2f})")
     return opt_est, best_entry
-
-def laqp_estimate(query_log, new_query, sample, dimensions, model, scaler, full_data_size, task):
-    # Flatten and predict error
-    vec = []
-    for dim in dimensions:
-        l, u = new_query[dim]
-        vec.extend([l, u])
-    vec = np.array([vec])
-    scaled = scaler.transform(vec)
-    pred_error = model.predict(scaled)[0]
-    
-    # Find the most error-similar historical query
-    best_index = -1
-    best_error_diff = float('inf')
-    best_entry = None
-
-    for idx, entry in enumerate(query_log):
-        error_diff = abs(entry['error'] - pred_error)
-        if error_diff < best_error_diff:
-            best_error_diff = error_diff
-            best_index = idx
-            best_entry = entry
-    
-    # Compute estimates
-    if task == "COUNT":
-        sample_new = sample_count(new_query, sample, full_data_size)
-    else:
-        sample_new = sample_sum("Global_active_power", new_query, sample, full_data_size)
-    
-    sample_opt = best_entry['estimate']
-    final_est = best_entry['exact'] + (sample_new - sample_opt)
-    final_est = max(0, final_est)
-    print(f"Selected optimal query index: {best_index} (out of  {len(query_log)})")
-    if final_est == 0:
-        print("LAQP estimate clamp to 0")
-    else:    
-        print(f"Basic LAQP estimate: {final_est:.2f}")
-    print(f"Predicted error for new query: {pred_error:.2f}")
-    print(f"Chosen historical query error: {best_entry['error']:.2f} (diff: {best_error_diff:.2f})\n")
-    # print("Predicate ranges of chosen query:")
-    # for dim, (l, u) in best_entry['query'].items():
-    #     print(f"  {dim}: [{l:.2f}, {u:.2f}]")
-    # print(f"\nFinal LAQP estimate: {final_est:.2f}")    
-
-    return final_est, best_index, best_entry

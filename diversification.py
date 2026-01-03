@@ -3,8 +3,8 @@ import numpy as np
 import random
 from sklearn.metrics.pairwise import euclidean_distances
 
-# Diversification (to 800)
-def diversify_query_log(log, dimensions, k=800):
+# Diversification to minimize worst error
+def diversify_query_log(log, dimensions, k):
     features = []
     for entry in log:
         vec = [entry['query'][dim][i] for dim in dimensions for i in range(2)]

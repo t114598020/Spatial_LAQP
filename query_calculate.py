@@ -1,13 +1,13 @@
 import numpy as np
 
-# Function to compute exact SUM for a query
+# Exact SUM
 def exact_sum(agg_col, query, df):
     mask = np.ones(len(df), dtype=bool)
     for dim, (lower, upper) in query.items():
         mask &= (df[dim] >= lower) & (df[dim] <= upper)
     return df.loc[mask, agg_col].sum()
 
-# Function for sampling-based approximate SUM (scaled)
+# Sampling-based approximate SUM (scaled)
 def sample_sum(agg_col, query, samp_df, full_size):
     mask = np.ones(len(samp_df), dtype=bool)
     for dim, (lower, upper) in query.items():

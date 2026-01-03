@@ -9,14 +9,18 @@ from estimation import optimized_laqp_estimate
 import folium.plugins as plugins
 
 # model's weight path
-model_weight_path = "./weights/12_27_uber.pkl"
-model_data = joblib.load(model_weight_path)
+model_weight_path = "./weights/1_3_uber.pkl"
+weight = joblib.load(model_weight_path)
 # import model's weight
-model = model_data["model"]
-scaler = model_data["error_scaler"]
-best_alpha = model_data["alpha"]
-training_data_query_log = model_data["training_query"]
-sample = model_data["sample"]
+model = weight['model']
+error_scaler = weight['error_scaler']
+best_alpha = weight['alpha']
+training_data_query_log = weight['training_query']
+sample = weight['sample']
+error_mean = weight['error_mean']
+error_std = weight['error_std']
+range_mean = weight['range_mean']
+range_std = weight['range_std']
 
 file_path = './data/all_uber.csv'
 data = pd.read_csv(file_path)
@@ -218,7 +222,9 @@ m.fit_bounds([[st.session_state.min_lat, st.session_state.min_lon], [st.session_
 col1, col2 = st.columns(2)
 with col1:
     if st.button("Query Search"):
-        approx, entry = optimized_laqp_estimate(training_data_query_log, query, sample, dimensions, model, scaler, full_data_size, "COUNT", best_alpha)
+        approx, entry = optimized_laqp_estimate(training_data_query_log, query, sample, dimensions, 
+                                                model, error_scaler, full_data_size, "COUNT", best_alpha,
+                                                error_mean, error_std, range_mean, range_std)
         exact_val = exact_count(query, data)
         diff = abs(approx - exact_val)
         rel_err = diff / exact_val if exact_val > 0 else 0
