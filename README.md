@@ -2,7 +2,7 @@
 
 The reference paper is [LAQP (Learning-based Approximate Query Processing](https://arxiv.org/abs/2003.02446).
 
-We reproduced LAQP and compared it with SAQP (sampling-based AQP) and AQP++ (pre-aggregate AQP with range similar) on POWER and Uber Pickups NYC dataset, experiments show that LAQP has better performance than SAQP and AQP++, but will cost more time because it used error prediction model, the images below are the ARE (Average Relative Error) result evaluated on POWER and Uber Pickups NYC dataset.
+We reproduced LAQP and compared it with SAQP (sampling-based AQP) and AQP++ (pre-aggregate AQP with range similar) on POWER and Uber Pickups NYC dataset, experiments show that LAQP has better performance than SAQP and AQP++, but will cost more time because it used error prediction model, the images below are the ARE (Average Relative Error) results evaluated on POWER and Uber Pickups NYC dataset.
 
 <img src="https://github.com/t114598020/Spatial_LAQP/blob/main/images/power_are_result.png?raw=true" height="625px" width="500px" />
 <img src="https://github.com/t114598020/Spatial_LAQP/blob/main/images/uber_are_result.png?raw=true" height="625px" width="500px" />
@@ -42,6 +42,7 @@ Also, user can draw a bbox to customize query.
 <img src="https://github.com/t114598020/Spatial_LAQP/blob/main/images/demo_query.png?raw=true" height="625px" width="500px" />
 <img src="https://github.com/t114598020/Spatial_LAQP/blob/main/images/demo_draw.png?raw=true" height="630px" width="500px" />
 <img src="https://github.com/t114598020/Spatial_LAQP/blob/main/images/demo_result.png?raw=true" height="750px" width="500px" />
+
 
 
 
